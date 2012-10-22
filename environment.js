@@ -7,16 +7,17 @@ exports.variables = function(node_env) {
 		return
 	}
 	
-	var port = process.env.PORT
-	
+	var port = process.env.PORT || 3000
+	var user = process.env.V4_DB_USER || process.env.USER
+
 	if (environment.toLowerCase() === 'development') {
 		return {
 			NODE_ENV: environment,
 			PORT: port,
-			MYSQL_USER: process.env.USER,
+			MYSQL_USER: user,
 			MYSQL_DATABASE: 'stats',
 			MYSQL_HOST: 'localhost',
-			MYSQL_PASSWORD: ''
+			MYSQL_PASSWORD: process.env.V4_DB_PWD
 	
 		}
 	}
