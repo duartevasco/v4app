@@ -2,6 +2,11 @@
 exports.variables = function(node_env) {
 	var environment = node_env || process.env.NODE_ENV
 	
+	if (!environment) {
+		console.error("NODE_ENV is not set")
+		return
+	}
+	
 	var port = process.env.PORT
 	
 	if (environment.toLowerCase() === 'development') {
@@ -16,7 +21,7 @@ exports.variables = function(node_env) {
 	if (environment.toLowerCase() === 'production') {
 		return {
 			NODE_ENV: environment,
-			PORT: port
+			PORT: port,
 			MYSQL_USER: '',
 			MYSQL_DATABASE: 'stats',
 			MYSQL_HOST: ''
@@ -24,7 +29,7 @@ exports.variables = function(node_env) {
 	}
 	return {
 		NODE_ENV: '',
-		PORT: 0
+		PORT: 0,
 		MYSQL_USER: '',
 		MYSQL_DATABASE: '',
 		MYSQL_HOST: ''
