@@ -15,7 +15,9 @@ exports.variables = function(node_env) {
 			PORT: port,
 			MYSQL_USER: process.env.USER,
 			MYSQL_DATABASE: 'stats',
-			MYSQL_HOST: 'localhost'
+			MYSQL_HOST: 'localhost',
+			MYSQL_PASSWORD: ''
+	
 		}
 	}
 	if (environment.toLowerCase() === 'production') {
@@ -24,7 +26,8 @@ exports.variables = function(node_env) {
 			PORT: port,
 			MYSQL_USER: '',
 			MYSQL_DATABASE: 'stats',
-			MYSQL_HOST: ''
+			MYSQL_HOST: '',
+			MYSQL_PASSWORD: ''
 		}
 	}
 	return {
@@ -32,6 +35,7 @@ exports.variables = function(node_env) {
 		PORT: 0,
 		MYSQL_USER: '',
 		MYSQL_DATABASE: '',
-		MYSQL_HOST: ''
+		MYSQL_HOST: '',
+		MYSQL_PASSWORD: ''
 	}
 }
