@@ -15,11 +15,17 @@ exports.get_all_weeks = function(req, res) {
  
 	client.query(queryString, function(err, rows, fields) {
 		if (err) throw err;
-		res.write(queryString +'\n')
+		var weeks = new Array()
 		for (var i in rows) {
-			res.write('table '+ rows[i].Tables_in_stats + '\n');
+			var table_name = rows[i].Tables_in_stats
+			var week = table_name.substring(10, 12)
+			var year = table_name.substring(6, 10)
+			weeks.push({
+				href: '/get/total/count/'+ year +'/'+ week,
+				title: 'totals for year '+ year +' and week '+ week
+			})
 		}
-		res.end();
+		res.render('list_weeks', {title: 'List all weeks', weeks: weeks});
 	});
  
 	client.end();
