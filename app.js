@@ -10,6 +10,7 @@ var express = require('express')
   , http = require('http')
   , path = require('path')
   , process_env = require('./environment').variables()
+  , week_graph = require('./routes/week_graph')
 
 var app = express();
 
@@ -33,6 +34,7 @@ app.configure('development', function(){
 app.get('/', routes.index);
 app.get('/get/total/count/:year/:week', week_counter.week_count);
 app.get('/get/all/weeks', get_weeks.get_all_weeks);
+app.get('/graph/weeks', week_graph.index);
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log("Express server listening on port " + app.get('port'));
