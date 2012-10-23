@@ -8,9 +8,7 @@ var mysql = require('mysql');
 /*
  * GET home page.
  */
-
-
-exports.index = function(req, res){
+ exports.index = function(req, res){
 	var client = mysql.createClient({
 		user:     process_env.MYSQL_USER,
 		database: process_env.MYSQL_DATABASE,
