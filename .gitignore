@@ -16,3 +16,4 @@ node_modules
 npm-debug.log
 .settings
 .c9*
+*.swp
