@@ -16,14 +16,12 @@ var mysql = require('mysql');
 		host:     process_env.MYSQL_HOST
 	});
 
-	var queryString = 'SELECT * FROM continent_filter';
+	var queryString = 'SELECT count(*) as count FROM stats_201241 where os like "%xp%" and productver = 1';
  
 	client.query(queryString, function(err, rows, fields) {
 		if (err) throw err;
  
-		for (var i in rows) {
-			res.write('Post Titles: ' + rows[i].description + '\n');
-		}
+		res.write('Number of AV12 on XP week 41 in 2012: ' + rows[0].count + '\n');
 		res.end();
 	});
  
