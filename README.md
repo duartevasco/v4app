@@ -15,10 +15,16 @@ To prepare for running in node.js:
 
 1- in your terminal, export NODE_ENV=development  (or any other environment you like)
 
-2- if needed, export V4_DB_USER='username' for database user. If not specified, the system user is used
+(not needed)
+2- if needed, export MYSQL_HOST='username' for database user. If not specified, the system user is used
 
-3- if needed, export V4_DB_PWD='secret' for database password of V4_DB_USER, otherwise empty pwd is used
+(not needed)
+3- if needed, export MYSQL_PASSWORD='secret' for database password of, otherwise empty pwd is used
 
 4- export PORT=port_number to specify the web server port, otherwise 3000 is used
 
 5- run node app and enjoy
+
+6- mysql -uroot
+
+7- grant all on stats.* to '<user.name>'@'localhost';
