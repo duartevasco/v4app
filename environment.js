@@ -8,7 +8,9 @@ exports.variables = function(node_env) {
 	}
 	
 	var port = process.env.PORT || 3000
-	var user = process.env.V4_DB_USER || process.env.USER
+	var user = process.env.USER
+    var mysql_host = process.env.MYSQL_HOST || 'localhost'
+    var mysql_password = process.env.MYSQL_PASSWORD || ''
 
 	if (environment.toLowerCase() === 'development') {
 		return {
@@ -16,8 +18,8 @@ exports.variables = function(node_env) {
 			PORT: port,
 			MYSQL_USER: user,
 			MYSQL_DATABASE: 'stats',
-			MYSQL_HOST: 'localhost',
-			MYSQL_PASSWORD: process.env.V4_DB_PWD
+			MYSQL_HOST: mysql_host,
+			MYSQL_PASSWORD: mysql_password
 	
 		}
 	}
@@ -25,10 +27,10 @@ exports.variables = function(node_env) {
 		return {
 			NODE_ENV: environment,
 			PORT: port,
-			MYSQL_USER: '',
+			MYSQL_USER: 'remote_stats_ro',
 			MYSQL_DATABASE: 'stats',
-			MYSQL_HOST: '',
-			MYSQL_PASSWORD: ''
+    		MYSQL_HOST: mysql_host,
+			MYSQL_PASSWORD: mysql_password
 		}
 	}
 	return {
