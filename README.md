@@ -28,3 +28,4 @@ To prepare for running in node.js:
 6- mysql -uroot
 
 7- grant all on stats.* to '<user.name>'@'localhost';
+
