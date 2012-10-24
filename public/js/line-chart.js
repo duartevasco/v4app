@@ -82,7 +82,6 @@ $(function () {
                     type: 'spline',
                     name: 'xp installations of AV12',
                     pointInterval: 24 * 3600 * 1000,
-                    pointStart: Date.UTC(2010, 0, 01),
                     data: data
                 }]
             });

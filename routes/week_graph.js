@@ -48,6 +48,9 @@ exports.week_count_array_json = function(req, res) {
                 client.end();
             }
             for (var i in rows) {
+                if(!rows[i].count){
+                    continue;
+                }
                 result.push({
             		y: parseInt(rows[i].count ? rows[i].count : 0, 10),
                     x: UTCDate(rows[i].date)
