@@ -29,23 +29,23 @@ exports.week_count_array_json = function(req, res) {
     var newQueryString = new Array();
     client.query(queryString, function(err, rows, fields) {
         if(err) {
-            throw err;
             client.end();
+            throw err;
         }
         var selectStatements = new Array()
     	for (var i in rows) {
             var date = rows[i].Tables_in_stats.substring(6, 12);
             selectStatements.push(' SELECT SUM(count) as count, "' + date + '" as date FROM ' + rows[i].Tables_in_stats +' WHERE os LIKE "%xp%" AND productver=1');
 		}
-        newQueryString.push(selectStatements.join('\n UNION ALL\n'))
+        newQueryString.push(selectStatements.join('\n UNION ALL\n'));
         newQueryString.push(' GROUP BY date;');
 
         var result = new Array();
-        var sql = newQueryString.join('\n')
+        var sql = newQueryString.join('\n');
         client.query(sql, function(err, rows, fields) {
             if(err) {
-                throw err;
                 client.end();
+                throw err;
             }
             for (var i in rows) {
                 if(!rows[i].count){

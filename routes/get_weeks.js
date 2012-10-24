@@ -29,7 +29,10 @@ exports.get_all_weeks = function(req, res) {
 	var queryString = 'show tables where Tables_in_stats like "stats_%"';
  
 	client.query(queryString, function(err, rows, fields) {
-		if (err) throw err;
+		if (err) {
+            client.end();
+            throw err;
+		}
 		var weeks = get_all_weeks_in_array( rows )
 		res.render('list_weeks', {title: 'List all weeks', weeks: weeks});
 	});
