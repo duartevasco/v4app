@@ -34,7 +34,8 @@ app.configure('development', function(){
 app.get('/', routes.index);
 app.get('/get/total/count/:year/:week', week_counter.week_count);
 app.get('/get/all/weeks', get_weeks.get_all_weeks);
-app.get('/graph/weeks', week_graph.index);
+app.get('/graph/weeks', week_graph.week_count_array);
+app.get('/graph/weeks.json', week_graph.week_count_array_json);
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log("Express server listening on port " + app.get('port'));
