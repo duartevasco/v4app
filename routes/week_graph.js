@@ -2,7 +2,7 @@ var process_env = require('../environment').variables();
 var mysql = require('mysql');
 
 exports.week_count_array = function(req, res) {
-    res.render('week_graph', {title: 'List all tables'});
+    res.render('week_graph', {title: 'Graph of installations by week'});
 };
 
 exports.week_count_array_json = function(req, res) {

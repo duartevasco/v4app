@@ -23,7 +23,7 @@ $(function () {
                     spacingRight: 20
                 },
                 title: {
-                    text: 'AV13 installations'
+                    text: 'AV12 installations'
                 },
                 subtitle: {
                     text: document.ontouchstart === undefined ?
@@ -39,7 +39,7 @@ $(function () {
                 },
                 yAxis: {
                     title: {
-                        text: 'Active installations'
+                        text: 'Unique installations that contacted our servers / week'
                     },
                     min: 0,
                     startOnTick: false,
