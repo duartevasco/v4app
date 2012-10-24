@@ -14,60 +14,17 @@ exports.week_count_array_json = function(req, res) {
 		host:     process_env.MYSQL_HOST
 	});
 
-    function firstDayOfWeek(input) {
+    function UTCDate(input) {
+        var week = input.substring(4, 6);
+        var year = input.substring(0, 4);
         
-        var week = input.substring(4, 6)
-        var year = input.substring(0, 4)
+        var j10 = new Date( year,0,10,12,0,0),
+        j4 = new Date( year,0,4,12,0,0),
+        mon1 = j4.getTime() - j10.getDay() * 86400000;
+        var result = new Date(mon1 + ((week - 1)  * 7 ) * 86400000);
+        return result.getTime();
+    }
         
-        if (typeof year !== 'undefined') {
-            year = (new Date()).getFullYear();
-        }
-
-        var date       = firstWeekOfYear(year),
-            weekTime   = weeksToMilliseconds(week),
-            targetTime = date.getTime() + weekTime;
-        
-        return date.setTime(targetTime); 
-    }
-
-    function weeksToMilliseconds(weeks) {
-        return 1000 * 60 * 60 * 24 * 7 * (weeks - 1);
-    }
-    
-    function firstWeekOfYear(year) {
-        var date = new Date();
-        date = firstDayOfYear(date,year);
-        date = firstWeekday(date);
-        return date;
-    }
-    
-    function firstDayOfYear(date, year) {
-        date.setYear(year);
-        date.setDate(1);
-        date.setMonth(0);
-        date.setHours(0);
-        date.setMinutes(0);
-        date.setSeconds(0);
-        date.setMilliseconds(0);
-        return date;
-    }
-    
-    function firstWeekday(date) {
-        
-        var day = date.getDay(),
-            day = (day === 0) ? 7 : day;
-            
-        if (day > 3) {
-    
-            var remaining = 8 - day,
-                target    = remaining + 1;
-                    
-            date.setDate(target);
-        }
-        
-        return date;
-    }
-    
     var queryString = 'SHOW TABLES WHERE Tables_in_stats LIKE "stats_%";';
     var newQueryString = new Array();
     client.query(queryString, function(err, rows, fields) {
@@ -93,7 +50,7 @@ exports.week_count_array_json = function(req, res) {
             for (var i in rows) {
                 result.push({
             		y: parseInt(rows[i].count ? rows[i].count : 0, 10),
-                    x: firstDayOfWeek(rows[i].date),
+                    x: UTCDate(rows[i].date)
 //                    name: 'xp range'
     			});
     		}

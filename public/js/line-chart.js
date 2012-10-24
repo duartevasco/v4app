@@ -12,18 +12,6 @@ $(function () {
                     
                     
                     build_chart(data)
-                    
-//                    chart.series.data = [1,2,3,4,5,6,7]
-//                    chart.redraw()
-//                    pointInterval: 24 * 3600 * 1000,
-//                    pointStart: Date.UTC(2010, 0, 01),
-//                    data: [10,12,11,15,18,11,13,14,12,10,8,11,15]
-                    
-                    
-//                    $.each(data.items, function(i,item){
-//                    $("<img/>").attr("src", item.media.m).appendTo("#images");
-//                    if ( i == 3 ) return false;
-//                });
                 });
         }
         
@@ -91,7 +79,7 @@ $(function () {
                     }
                 },       
                 series: [{
-                    type: 'area',
+                    type: 'spline',
                     name: 'xp installations of AV12',
                     pointInterval: 24 * 3600 * 1000,
                     pointStart: Date.UTC(2010, 0, 01),
