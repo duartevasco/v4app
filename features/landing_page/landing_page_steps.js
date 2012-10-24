@@ -12,12 +12,12 @@ var readLandingPageTestSteps = function () {
     // be executed by Cucumber.
   });
 
-this.Then(/^I should see "([^"]*)" as the "([^"]*)" link with ref to "([^"]*)"$/, function(link_text, order, href, next) {
-  // Seems the <a> and </a> counts each as one, starting with index 1
-  var item = parseInt(order) * 2 - 1 
-  this.browser.html('a:nth-child('+ item +')').should.include(link_text)
-  this.browser.html('a:nth-child('+ item +')[href$="'+ href +'"]').should.not.be.empty
-  next();
+  this.Then(/^I should see "([^"]*)" as the "([^"]*)" link with ref to "([^"]*)"$/, function(link_text, order, href, next) {
+    // Seems the <a> and </a> counts each as one, starting with index 1
+    var item = parseInt(order) * 2 - 1 
+    this.browser.html('a:nth-child('+ item +')').should.include(link_text)
+    this.browser.html('a:nth-child('+ item +')[href$="'+ href +'"]').should.not.be.empty
+    next();
 });
 
 };

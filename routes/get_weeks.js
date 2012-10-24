@@ -3,7 +3,6 @@ var process_env = require('../environment').variables();
 var mysql = require('mysql');
 
 exports.get_all_weeks = function(req, res) {
-	
 	var client = mysql.createClient({
 		user:     process_env.MYSQL_USER,
 		database: process_env.MYSQL_DATABASE,
@@ -26,7 +25,6 @@ exports.get_all_weeks = function(req, res) {
 			})
 		}
 		res.render('list_weeks', {title: 'List all weeks', weeks: weeks});
+		client.end();
 	});
- 
-	client.end();
 }
