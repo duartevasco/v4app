@@ -1,0 +1,11 @@
+#!/bin/sh
+
+
+cd /u/logfiles/daily/month
+while true; do 
+	echo "Importing data" 
+	/root/import.sh 
+	echo "done"
+	sleep 3600
+done
+

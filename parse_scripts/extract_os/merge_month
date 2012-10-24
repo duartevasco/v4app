@@ -1,0 +1,67 @@
+#!/usr/bin/php
+<?
+
+$files = array();
+$basedir = "/u/logfiles/daily/week";
+$monthdir= "/u/logfiles/daily/month";
+
+exec("find $basedir -maxdepth 1 -name '??????.txt.sorted'", $files);
+
+$weeks = array();
+foreach($files as $file)
+{
+if (preg_match('/\/(\d{6}).txt.sorted$/', $file, $m))
+{
+	$weeks[$m[1]*1] = $file;
+}
+}
+
+function getDaysInWeek ($weekNumber, $year) {
+  // Count from '0104' because January 4th is always in week 1
+  // (according to ISO 8601).
+  $time = strtotime($year . '0104 +' . ($weekNumber - 1)
+                    . ' weeks');
+  // Get the time of the first day of the week
+  $mondayTime = strtotime('-' . (date('w', $time) - 1) . ' days',
+                          $time);
+  // Get the times of days 0 -> 6
+  $dayTimes = array ();
+  for ($i = 0; $i < 7; ++$i) {
+    $dayTimes[] = strtotime('+' . $i . ' days', $mondayTime);
+  }
+  // Return timestamps for mon-sun.
+  return $dayTimes;
+}
+function previousWeek($week)
+{
+	$year = intval($week / 100);
+	$weekNumber = intval($week % 100);
+	$days = getDaysInWeek($weekNumber, $year);
+	$ts = $days[0] - 86400*3;
+	$i = intval(date("W",$ts)) + intval(date("o",$ts))*100;
+	return $i;
+}
+
+foreach($weeks as $week => $source)
+{
+	$of = "$monthdir/$week.txt";
+	if (!file_exists($of))
+	{
+		$w = $week;
+		$f = array($source);
+		for($i=0;$i<3;$i++)
+		{
+			$w = previousWeek($w);
+			if (array_key_exists($w, $weeks))
+				$f[] = $weeks[$w];
+		}
+		if (count($f) == 4)
+		{
+			$cmd = "sort -T /temp/1 -S 1G --compress-program=/bin/gzip ".implode(" ",$f)." | uniq | cut -f1-9 | uniq -c | perl -pe 's/^\s+//,s/ /\\t/' > ".$of.".tmp && mv ".$of.".tmp ".$of;
+                        echo "Run: $cmd\n";
+  //                      system($cmd);
+		}
+	}
+}
+
+?>

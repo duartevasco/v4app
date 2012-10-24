@@ -1,0 +1,5 @@
+#!/bin/bash
+
+#-P number of processes
+#-n1 number of arguments
+xargs -P16 -n1 ./extract_info < inputfiles.txt

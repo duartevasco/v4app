@@ -1,0 +1,19 @@
+#!/bin/bash
+# first parameter
+FN=$1
+
+UD=/u/logfiles/uniform
+TD=/temp/1
+DN=`dirname ${TD}/${FN}`
+#create dir
+mkdir -p $DN
+#cat show file on console
+#split file in columns with whitespace
+#unzip file
+#pass the command to next with |
+#search for master idx
+#take col 2 + 6
+#sort the output 
+#uniq filters duplicates
+#call fetch essentials
+cat  ${UD}/${FN}  |gunzip -c  | grep master.idx | cut -f2,6 | sort -S 1G | uniq | ./fetch_essential | sort -S 1G | uniq | gzip -c > ${TD}/${FN}

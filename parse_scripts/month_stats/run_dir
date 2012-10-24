@@ -1,0 +1,24 @@
+#!/bin/bash
+
+#
+# 
+#
+DAY=$1
+UNI=/u/logfiles/uni
+MONTH=`expr $DAY / 2592000  \* 2592000`
+TEMPDIR1=/temp
+TEMPDIR2=/u/logfiles/daily/day/geo
+
+P=${UNI}/${MONTH}/${DAY}
+O=${TEMPDIR2}/${MONTH}
+
+if [ -f ${O}/${DAY}.txt -o -f ${O}/${DAY}.txt.gz ] ; then
+	echo "Skipping ${O}/${DAY}.txt (already done!)"
+else
+	mkdir -p ${O}
+
+	find ${P} -name '*.log.gz' -print0 | xargs -0 gzip -c -d | grep master.idx | \
+		cut -f2,6 | /root/extract_os/fetch_essential3 | \
+		sort -T ${TEMPDIR1} -S 1G | uniq > ${O}/${DAY}.tmp && \
+		mv ${O}/${DAY}.tmp ${O}/${DAY}.txt
+fi

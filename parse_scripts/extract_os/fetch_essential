@@ -1,0 +1,30 @@
+#!/usr/bin/perl
+#
+
+use strict;
+use Digest::MD5 qw(md5_hex);
+
+while(<STDIN>)
+{
+	chomp;
+	my ($ip, $ua) = split(/\t/);
+	my ($ltype, $product, $os, $osver) = ("UNKNOWN", "UNKNOWN","UNKNOWN", "UNKNOWN");
+	if ($ua =~ /AntiVir[^(]+\(\s*([A-Z]+)\s*;\s*([A-Z0-9]+)\s*;([^;]*);([^;]*);([^;]*);\s*([^;]*)\s*;\s*([^;]*)\s*/)
+	{
+		$ltype = $1;
+		$product = $2;
+		$os = $6;
+		$osver = $7;
+	}
+	if ($ua =~ /([0-9a-f]{40})/)
+	{
+		print $ltype."\t".$product."\t".$os."\t".$osver."\t".$1."\n";
+	} elsif (  $ua =~ /([0-9a-f]{8})-([0-9a-f]{4})-([0-9a-f]{4})-([0-9a-f]{4})-([0-9a-f]{6})/) { 
+		print $ltype."\t".$product."\t".$os."\t".$osver."\t".$1.$2.$3.$4.$5."00000000000001\n";
+	} else {
+		# Hack UA
+		$ua =~ s/(AVE|VDF) \d+(\.\d+)+/$1 removed/g;
+		#print STDERR "Licence \"$ltype\", Product \"$product\", IP \"$ip\", UA \"$ua\"\n";
+		print $ltype."\t".$product."\t".$os."\t".$osver."\t".md5_hex($ip." ".$ua)."00000000\n";
+	}
+}

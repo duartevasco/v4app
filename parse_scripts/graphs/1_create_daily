@@ -1,0 +1,7 @@
+#!/bin/sh
+
+#
+while true ;do
+/root/bin/todo.pl | cut -f1 | xargs -P16 -r -n1 /root/month_stats/run_dir
+sleep 300
+done

@@ -1,0 +1,44 @@
+#!/usr/bin/php
+<?
+
+$files = array();
+$basedir = "/u/logfiles/daily/day/geo";
+$weekdir = "/u/logfiles/daily/week";
+exec("find $basedir -name '*txt'", $files);
+
+$weeks = array();
+
+foreach($files as $file)
+{
+	if (preg_match('/\/\d+\/(\d+)\.txt$/', $file, $m))
+	{
+		$ts = $m[1];
+		$i = intval(date("W",$ts)) + intval(date("o",$ts))*100;
+		if (array_key_exists($i, $weeks))
+			$weeks[$i][] = $file;
+		else
+			$weeks[$i] = array($file);
+	}
+}
+
+foreach($weeks as $week => $files)
+{
+	if (count($files) == 7)
+	{
+		$outfile = $weekdir."/".$week.".txt";
+		if (!file_exists($outfile))
+		{
+			$cmd = "sort -T /temp/1 -S 1G -m ".implode(" ",$files)." | uniq > ".$outfile.".tmp && mv ".$outfile.".tmp ".$outfile;
+			echo "Run: $cmd\n"; 
+			system($cmd);
+			if (file_exists($outfile))
+				foreach($files as $file)
+					system("/bin/gzip ".escapeshellarg($file));
+					//rename($file, $file.".done");
+		}
+	} else {
+		echo "Week $week still incomplete\n";
+	}
+}
+
+?>

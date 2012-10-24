@@ -1,0 +1,16 @@
+#!/bin/sh
+
+TF=`tempfile`
+while true ; do
+	cd /u/logfiles/daily/week
+	for i in ??????.txt ;do 
+		if [ ! -f  ${i}.sorted ] ; then 
+			echo ./swap_fields \<  $i \| sort -T /temp -S 1G \> ${i}.sorted.tmp \&\& mv  ${i}.sorted.tmp  ${i}.sorted 
+		fi
+	done > $TF
+	if [ -s $TF ] ; then 
+		/root/bin/runcmds 16 $TF
+	fi
+	rm $TF
+	sleep 300
+done

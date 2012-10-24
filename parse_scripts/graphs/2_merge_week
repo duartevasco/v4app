@@ -1,0 +1,9 @@
+#!/bin/sh
+
+cd /root/extract_os/
+while true ;do 
+	echo -n `date`": Merging week: "
+	./merge_week
+	echo 'done!'
+	sleep 100
+done

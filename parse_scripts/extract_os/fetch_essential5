@@ -1,0 +1,28 @@
+#!/usr/bin/perl
+#
+# gzip -c -d 1257202200-dl1pro-????.log.gz | /root/extract_os/fetch_essential5 | sort -k1,2 | uniq > /tmp/loos
+
+
+use strict;
+use Digest::MD5 qw(md5_hex);
+
+while(<STDIN>)
+{
+	chomp;
+	my @a = split(/\t/);
+	my ($ts, $ip, $ua) = ($a[0], $a[1], $a[5]);
+
+	$ts-- if ($a[2] =~ /\/master.idx$/);
+
+	my $s = sprintf("%08x", $ts)."\t".$_;
+	if ($ua =~ /([0-9a-f]{40})/)
+	{
+		print $1."\t".$s."\n";
+	} elsif (  $ua =~ /([0-9a-f]{8})-([0-9a-f]{4})-([0-9a-f]{4})-([0-9a-f]{4})-([0-9a-f]{6})/) { 
+		print $1.$2.$3.$4.$5."00000000000001\t".$s."\n";
+	} else {
+		# Hack UA
+		$ua =~ s/(AVE|VDF) \d+(\.\d+)+/$1 removed/g;
+		print md5_hex($ip." ".$ua)."00000000\t".$s."\n";
+	}
+}

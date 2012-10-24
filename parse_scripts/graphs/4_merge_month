@@ -1,0 +1,19 @@
+#!/bin/sh
+
+TF1=`tempfile`
+TF2=`tempfile`
+cd /root/extract_os/
+while true ;do 
+	./merge_month > $TF1
+	grep ^Run: $TF1 | cut -c6- > $TF2
+	if [ -s $TF2 ] ; then
+		echo `date`" Merging month"
+		/root/bin/runcmds 8 $TF2
+		cat $TF2
+	else
+		echo `date`" Nothing to do"
+	fi
+	rm $TF1 $TF2
+	sleep 100
+done
+

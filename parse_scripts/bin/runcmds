@@ -1,0 +1,44 @@
+#!/usr/bin/php
+<?
+
+$max_childs = $argv[1];
+$file       = $argv[2];
+
+$jobs = explode("\n", file_get_contents($file));
+$childs = 0;
+
+function waitChild()
+{
+        global $childs;
+        $status = 0;
+        $ret = pcntl_wait($status);
+        if ($ret == -1)
+        {
+		die("pcntl_wait returned -1");
+	} else {
+		$childs--;
+	}
+
+}
+
+foreach($jobs as $job)
+{
+	$pid = pcntl_fork();
+	if ($pid == -1)
+	{
+		die("Could not fork");
+	} else if ($pid) {
+		$childs++;
+		if ($childs >= $max_childs) waitChild();
+	} else {
+		if (trim($job) != "")
+		{
+			//echo "Executing $job\n";
+			system($job);
+		}
+		exit(0);
+	}
+}
+while($childs > 0) waitChild();
+
+?>
