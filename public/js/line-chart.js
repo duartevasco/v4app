@@ -10,9 +10,9 @@ $(function () {
                 },
                 function(data) {
                     
+                    
                     build_chart(data)
                     
-//                    console.log(data)
 //                    chart.series.data = [1,2,3,4,5,6,7]
 //                    chart.redraw()
 //                    pointInterval: 24 * 3600 * 1000,
@@ -31,7 +31,7 @@ $(function () {
             chart = new Highcharts.Chart({
                 chart: {
                     renderTo: 'container',
-                    zoomType: 'x',
+                    zoomType: 'xy',
                     spacingRight: 20
                 },
                 title: {
@@ -89,32 +89,13 @@ $(function () {
                             }
                         }
                     }
-                },
-        
+                },       
                 series: [{
                     type: 'area',
                     name: 'xp installations of AV12',
                     pointInterval: 24 * 3600 * 1000,
                     pointStart: Date.UTC(2010, 0, 01),
                     data: data
-//                    [
-//                        {
-//                            x: 1,
-//                            y: 10
-//                        },
-//                        {
-//                            x: 2,
-//                            y: 10
-//                        },
-//                        {
-//                            x: 3,
-//                            y: 10
-//                        },
-//                        {
-//                            x: 4,
-//                            y: 10
-//                        }
-//                        ]
                 }]
             });
             return chart

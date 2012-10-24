@@ -92,13 +92,12 @@ exports.week_count_array_json = function(req, res) {
             }
             for (var i in rows) {
                 result.push({
-            		y: rows[i].count ? rows[i].count : 0,
+            		y: parseInt(rows[i].count ? rows[i].count : 0, 10),
                     x: firstDayOfWeek(rows[i].date),
-                    name: 'xp range',
-                    color: 'black'
+//                    name: 'xp range'
     			});
     		}
-            res.send(JSON.stringify(result));
+            res.send(result);
             client.end();
         });
     });
