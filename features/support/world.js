@@ -18,6 +18,8 @@ var World = function World(callback) {
   this.process_env = process_env;
   this.mysql = mysql;
 
+  this.webhost = "http://" + process_env.WEBHOST + ":" + process_env.PORT;
+
   callback(); // tell Cucumber we're finished and to use 'this' as the world instance
 };
 exports.World = World;

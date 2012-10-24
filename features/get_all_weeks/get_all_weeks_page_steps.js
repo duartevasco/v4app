@@ -7,7 +7,7 @@ var getAllWeeksTestSteps = function () {
     // `this` is set to a new this.World instance.
     // i.e. you may use this.browser to execute the step:
 
-    this.visit('http://localhost:3000/get/all/weeks', callback);
+    this.visit(this.webhost + '/get/all/weeks', callback);
 
     // The callback is passed to visit() so that when the job's finished, the next step can
     // be executed by Cucumber.

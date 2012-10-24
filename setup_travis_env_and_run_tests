@@ -1,0 +1,8 @@
+
+export USER=root
+export MYSQL_PASSWORD=12345
+export PORT=3000
+export NODE_ENV=test
+
+node_modules/cucumber/bin/cucumber.js --format pretty
+

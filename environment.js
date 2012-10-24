@@ -16,6 +16,7 @@ exports.variables = function(node_env) {
 		return {
 			NODE_ENV: environment,
 			PORT: port,
+                        WEBHOST: 'localhost',
 			MYSQL_USER: user,
 			MYSQL_DATABASE: 'stats',
 			MYSQL_HOST: mysql_host,
@@ -26,9 +27,21 @@ exports.variables = function(node_env) {
 		return {
 			NODE_ENV: environment,
 			PORT: port,
+                        WEBHOST: 'localhost',
 			MYSQL_USER: 'remote_stats_ro',
 			MYSQL_DATABASE: 'stats',
     		MYSQL_HOST: mysql_host,
+			MYSQL_PASSWORD: mysql_password
+		}
+	}
+	if (environment.toLowerCase() === 'test') {
+		return {
+			NODE_ENV: environment,
+			PORT: port,
+                        WEBHOST: 'localhost',
+			MYSQL_USER: user,
+			MYSQL_DATABASE: 'stats',
+    			MYSQL_HOST: mysql_host,
 			MYSQL_PASSWORD: mysql_password
 		}
 	}

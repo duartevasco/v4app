@@ -14,5 +14,8 @@
     "zombie": "1.4.1",
     "html5": "0.3.8",
     "should": "1.2.0"
+  },
+  "scripts": {
+    "test": "./setup_travis_env_and_run_tests"
   }
 }
