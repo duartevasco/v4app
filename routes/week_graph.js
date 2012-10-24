@@ -14,6 +14,60 @@ exports.week_count_array_json = function(req, res) {
 		host:     process_env.MYSQL_HOST
 	});
 
+    function firstDayOfWeek(input) {
+        
+        var week = input.substring(4, 6)
+        var year = input.substring(0, 4)
+        
+        if (typeof year !== 'undefined') {
+            year = (new Date()).getFullYear();
+        }
+
+        var date       = firstWeekOfYear(year),
+            weekTime   = weeksToMilliseconds(week),
+            targetTime = date.getTime() + weekTime;
+        
+        return date.setTime(targetTime); 
+    }
+
+    function weeksToMilliseconds(weeks) {
+        return 1000 * 60 * 60 * 24 * 7 * (weeks - 1);
+    }
+    
+    function firstWeekOfYear(year) {
+        var date = new Date();
+        date = firstDayOfYear(date,year);
+        date = firstWeekday(date);
+        return date;
+    }
+    
+    function firstDayOfYear(date, year) {
+        date.setYear(year);
+        date.setDate(1);
+        date.setMonth(0);
+        date.setHours(0);
+        date.setMinutes(0);
+        date.setSeconds(0);
+        date.setMilliseconds(0);
+        return date;
+    }
+    
+    function firstWeekday(date) {
+        
+        var day = date.getDay(),
+            day = (day === 0) ? 7 : day;
+            
+        if (day > 3) {
+    
+            var remaining = 8 - day,
+                target    = remaining + 1;
+                    
+            date.setDate(target);
+        }
+        
+        return date;
+    }
+    
     var queryString = 'SHOW TABLES WHERE Tables_in_stats LIKE "stats_%";';
     var newQueryString = new Array();
     client.query(queryString, function(err, rows, fields) {
@@ -31,7 +85,6 @@ exports.week_count_array_json = function(req, res) {
 
         var result = new Array();
         var sql = newQueryString.join('\n')
-        console.log(sql)
         client.query(sql, function(err, rows, fields) {
             if(err) {
                 throw err;
@@ -39,11 +92,13 @@ exports.week_count_array_json = function(req, res) {
             }
             for (var i in rows) {
                 result.push({
-            		count: rows[i].count ? rows[i].count : 0,
-                    date: rows[i].date
+            		y: rows[i].count ? rows[i].count : 0,
+                    x: firstDayOfWeek(rows[i].date),
+                    name: 'xp range',
+                    color: 'black'
     			});
     		}
-            res.send(result);
+            res.send(JSON.stringify(result));
             client.end();
         });
     });
