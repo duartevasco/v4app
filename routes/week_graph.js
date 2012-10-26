@@ -1,5 +1,6 @@
 var process_env = require('../environment').variables();
 var mysql = require('mysql');
+var mysql_connector = require('../mysql_connector');
 
 exports.week_count_array = function(req, res) {
     res.render('week_graph', {title: 'Graph of installations by week'});
@@ -7,12 +8,7 @@ exports.week_count_array = function(req, res) {
 
 exports.week_count_array_json = function(req, res) {
     
-	var client = mysql.createClient({
-		user:     process_env.MYSQL_USER,
-		database: process_env.MYSQL_DATABASE,
-		password: process_env.MYSQL_PASSWORD,
-		host:     process_env.MYSQL_HOST
-	});
+	var client = mysql_connector.connect_to_mysql()
 
     function UTCDate(input) {
         var week = input.substring(4, 6);
@@ -26,12 +22,12 @@ exports.week_count_array_json = function(req, res) {
     }
         
     function get_select_statements_for_each_table( rows ){
-		var selectStatements = new Array()
+	var selectStatements = new Array()
 	    for (var i in rows) {
             var date = rows[i].Tables_in_stats.substring(6, 12);
             selectStatements.push(' SELECT SUM(count) as count, "' + date + '" as date FROM ' + rows[i].Tables_in_stats +' WHERE os LIKE "%xp%" AND productver=1');
 		}
-		return selectStatements
+	return selectStatements
 	}
 
 
@@ -42,7 +38,7 @@ exports.week_count_array_json = function(req, res) {
             client.end();
             throw err;
         }
-		selectStatements = get_select_statements_for_each_table( rows )
+	selectStatements = get_select_statements_for_each_table( rows )
         newQueryString.push(selectStatements.join('\n UNION ALL\n'));
         newQueryString.push(' GROUP BY date;');
 
@@ -59,7 +55,7 @@ exports.week_count_array_json = function(req, res) {
                 }
                 result.push({
             		y: parseInt(rows[i].count ? rows[i].count : 0, 10),
-                    x: UTCDate(rows[i].date)
+			x: UTCDate(rows[i].date)
 //                    name: 'xp range'
     			});
     		}

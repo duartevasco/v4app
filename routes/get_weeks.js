@@ -1,6 +1,6 @@
-
 var process_env = require('../environment').variables();
 var mysql = require('mysql');
+var mysql_connector = require('../mysql_connector');
 
 function get_all_weeks_in_array(rows){
 	var weeks = new Array()
@@ -18,12 +18,7 @@ function get_all_weeks_in_array(rows){
 
 
 exports.get_all_weeks = function(req, res) {
-	var client = mysql.createClient({
-		user:     process_env.MYSQL_USER,
-		database: process_env.MYSQL_DATABASE,
-		password: process_env.MYSQL_PASSWORD,
-		host:     process_env.MYSQL_HOST
-	});
+	client = mysql_connector.connect_to_mysql()
 
 	var queryString = 'show tables where Tables_in_stats like "stats_%"';
  
