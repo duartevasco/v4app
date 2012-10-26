@@ -42,7 +42,6 @@ exports.week_count_array_json = function(req, res) {
             client.end();
             throw err;
         }
-        var selectStatements = new Array()
 		selectStatements = get_select_statements_for_each_table( rows )
         newQueryString.push(selectStatements.join('\n UNION ALL\n'));
         newQueryString.push(' GROUP BY date;');
