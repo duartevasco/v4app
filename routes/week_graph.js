@@ -25,6 +25,16 @@ exports.week_count_array_json = function(req, res) {
         return result.getTime();
     }
         
+    function get_select_statements_for_each_table( rows ){
+		var selectStatements = new Array()
+	    for (var i in rows) {
+            var date = rows[i].Tables_in_stats.substring(6, 12);
+            selectStatements.push(' SELECT SUM(count) as count, "' + date + '" as date FROM ' + rows[i].Tables_in_stats +' WHERE os LIKE "%xp%" AND productver=1');
+		}
+		return selectStatements
+	}
+
+
     var queryString = 'SHOW TABLES WHERE Tables_in_stats LIKE "stats_%";';
     var newQueryString = new Array();
     client.query(queryString, function(err, rows, fields) {
@@ -33,10 +43,7 @@ exports.week_count_array_json = function(req, res) {
             throw err;
         }
         var selectStatements = new Array()
-    	for (var i in rows) {
-            var date = rows[i].Tables_in_stats.substring(6, 12);
-            selectStatements.push(' SELECT SUM(count) as count, "' + date + '" as date FROM ' + rows[i].Tables_in_stats +' WHERE os LIKE "%xp%" AND productver=1');
-		}
+		selectStatements = get_select_statements_for_each_table( rows )
         newQueryString.push(selectStatements.join('\n UNION ALL\n'));
         newQueryString.push(' GROUP BY date;');
 
