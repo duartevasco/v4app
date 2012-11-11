@@ -1,6 +1,7 @@
 var process_env = require('../environment').variables();
 var mysql = require('mysql');
 var mysql_connector = require('../mysql_connector');
+var res_local = null;
 
 function get_all_weeks_in_array(rows){
 	var weeks = new Array()
@@ -16,19 +17,21 @@ function get_all_weeks_in_array(rows){
 	return weeks
 }
 
+function handle_and_render_all_weeks_graph( err, rows, fields){
+	if (err) {
+       	client.end();
+      	throw err;
+	}
+	var weeks = get_all_weeks_in_array( rows )
+	res_local.render('list_weeks', {title: 'List all weeks', weeks: weeks});
+	client.end();
+} 
+
 
 exports.get_all_weeks = function(req, res) {
-	client = mysql_connector.connect_to_mysql()
+	res_local = res
 
+	client = mysql_connector.connect_to_mysql()
 	var queryString = 'show tables where Tables_in_stats like "stats_%"';
- 
-	client.query(queryString, function(err, rows, fields) {
-		if (err) {
-            client.end();
-            throw err;
-		}
-		var weeks = get_all_weeks_in_array( rows )
-		res.render('list_weeks', {title: 'List all weeks', weeks: weeks});
-		client.end();
-	});
+ 	client.query(queryString, handle_and_render_all_weeks_graph );
 }
