@@ -11,6 +11,7 @@ var express = require('express')
   , path = require('path')
   , process_env = require('./environment').variables()
   , week_graph = require('./routes/week_graph')
+  , get_weeks_v2 = require('./routes/get_weeks_v2')
 
 var app = express();
 
@@ -33,7 +34,7 @@ app.configure('development', function(){
 
 app.get('/', routes.index);
 app.get('/get/total/count/:year/:week', week_counter.week_count);
-app.get('/get/all/weeks', get_weeks.get_all_weeks);
+app.get('/get/all/weeks', get_weeks_v2.get_all_weeks);
 app.get('/graph/weeks', week_graph.week_count_array);
 app.get('/graph/weeks.json', week_graph.week_count_array_json);
 

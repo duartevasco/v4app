@@ -28,10 +28,12 @@ function handle_and_render_all_weeks_graph( err, rows, fields){
 } 
 
 
-exports.get_all_weeks = function(req, res) {
+exports.get_all_weeks = function(req, res, next) {
 	res_local = res
-
+	
 	client = mysql_connector.connect_to_mysql()
 	var queryString = 'show tables where Tables_in_stats like "stats_%"';
  	client.query(queryString, handle_and_render_all_weeks_graph );
+
+    //db.query(queryString, req, res, next, handle_and_render_all_weeks_graph)
 }
