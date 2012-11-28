@@ -1,0 +1,16 @@
+#!/bin/bash
+
+read line < testresults/result.progress
+RESULT=$(echo -e $line | grep "[^\.]")
+#echo "result: $RESULT"
+if [ -z $RESULT ]
+then
+  echo "Cucumber tests SUCCEEDED!"
+  cat testresults/result.progress
+  exit 0
+fi
+
+echo "Cucumber tests FAILED!"
+cat testresults/result.progress
+exit 1
+

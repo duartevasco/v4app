@@ -1,0 +1,7 @@
+
+export USER=amt
+export PORT=3000
+export NODE_ENV=test
+
+node_modules/cucumber/bin/cucumber.js --format progress > testresults/result.progress
+
